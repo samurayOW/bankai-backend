@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "mangas",
+  "info": {
+    "singularName": "manga",
+    "pluralName": "mangas",
+    "displayName": "Manga",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "Title": {
+      "type": "string"
+    },
+    "Publisher": {
+      "type": "string"
+    },
+    "Author": {
+      "type": "string"
+    },
+    "NumberOfPages": {
+      "type": "integer"
+    },
+    "SerieSize": {
+      "type": "string"
+    },
+    "Cover": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "Description": {
+      "type": "richtext"
+    },
+    "MangaId": {
+      "type": "uid",
+      "targetField": "Title"
+    },
+    "Genres": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::genre.genre"
+    },
+    "AgeLimit": {
+      "type": "integer"
+    },
+    "Price": {
+      "type": "decimal"
+    },
+    "production": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::production.production"
+    }
+  }
+}
