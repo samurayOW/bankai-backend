@@ -60,6 +60,9 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::production.production"
+    },
+    "Rating": {
+      "type": "decimal"
     }
   }
 }
