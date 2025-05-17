@@ -1,0 +1,40 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "singularName": "order",
+    "pluralName": "orders",
+    "displayName": "Order",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "customer": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
+    },
+    "orderID": {
+      "type": "uid"
+    },
+    "deliveryLocation": {
+      "type": "string"
+    },
+    "sum": {
+      "type": "decimal"
+    },
+    "orderStatus": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::status.status"
+    },
+    "mangaAmounts": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::manga-amount.manga-amount"
+    }
+  }
+}

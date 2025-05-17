@@ -430,6 +430,36 @@ export interface ApiGenreGenre extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiMangaAmountMangaAmount extends Struct.CollectionTypeSchema {
+  collectionName: 'manga_amounts';
+  info: {
+    description: '';
+    displayName: 'MangaAmount';
+    pluralName: 'manga-amounts';
+    singularName: 'manga-amount';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    amount: Schema.Attribute.Integer;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::manga-amount.manga-amount'
+    > &
+      Schema.Attribute.Private;
+    manga: Schema.Attribute.Relation<'oneToOne', 'api::manga.manga'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiMangaManga extends Struct.CollectionTypeSchema {
   collectionName: 'mangas';
   info: {
@@ -471,6 +501,43 @@ export interface ApiMangaManga extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiOrderOrder extends Struct.CollectionTypeSchema {
+  collectionName: 'orders';
+  info: {
+    description: '';
+    displayName: 'Order';
+    pluralName: 'orders';
+    singularName: 'order';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    customer: Schema.Attribute.Relation<
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    deliveryLocation: Schema.Attribute.String;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::order.order'> &
+      Schema.Attribute.Private;
+    mangaAmounts: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::manga-amount.manga-amount'
+    >;
+    orderID: Schema.Attribute.UID;
+    orderStatus: Schema.Attribute.Relation<'oneToOne', 'api::status.status'>;
+    publishedAt: Schema.Attribute.DateTime;
+    sum: Schema.Attribute.Decimal;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiProductionProduction extends Struct.CollectionTypeSchema {
   collectionName: 'productions';
   info: {
@@ -489,6 +556,34 @@ export interface ApiProductionProduction extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::production.production'
+    > &
+      Schema.Attribute.Private;
+    publishedAt: Schema.Attribute.DateTime;
+    Title: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStatusStatus extends Struct.CollectionTypeSchema {
+  collectionName: 'statuses';
+  info: {
+    displayName: 'Status';
+    pluralName: 'statuses';
+    singularName: 'status';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::status.status'
     > &
       Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
@@ -954,7 +1049,6 @@ export interface PluginUsersPermissionsUser
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     blocked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
@@ -963,6 +1057,7 @@ export interface PluginUsersPermissionsUser
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    date: Schema.Attribute.Date;
     email: Schema.Attribute.Email &
       Schema.Attribute.Required &
       Schema.Attribute.SetMinMaxLength<{
@@ -1010,8 +1105,11 @@ declare module '@strapi/strapi' {
       'admin::user': AdminUser;
       'api::feedback.feedback': ApiFeedbackFeedback;
       'api::genre.genre': ApiGenreGenre;
+      'api::manga-amount.manga-amount': ApiMangaAmountMangaAmount;
       'api::manga.manga': ApiMangaManga;
+      'api::order.order': ApiOrderOrder;
       'api::production.production': ApiProductionProduction;
+      'api::status.status': ApiStatusStatus;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
